@@ -1,0 +1,16 @@
+How to play
+
+The rules in Minesweeper are simple:
+
+Uncover a mine, and the game ends.
+
+Uncover an empty square, and you keep playing.
+
+Uncover a number, and it tells you how many mines 
+lay hidden in the eight surrounding squares—information 
+you use to deduce which nearby squares are safe to click.
+
+Left click to uncover, right click to flag for bombs
+
+The game ends when all bombs are flagged and all non-bombs are 
+uncovered

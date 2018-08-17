@@ -1,0 +1,90 @@
+% Grid.cla
+% Gaurav Sharma
+
+unit
+class Grid
+    export setGrid, draw, isInside, getRowCol   
+
+
+    var x, y, numRows, numCols, horiz, vert, iColor : int
+
+
+    x := 0  
+    y := 0               % the x and  y coordinates for the lower left corner of the grid
+    numRows := 3
+    numCols := 3   % the number of rows and columns, respectively
+    horiz := 50 
+    vert := 50       % the length and width of each cell, in pixels
+    iColor := black        % the color of the grid
+
+    
+    %initializes the values in the Grid
+    proc setGrid (theX, theY, rows, cols, horizontal, vertical, Color : int)
+       
+	x := theX
+	y := theY
+	numRows := rows
+	numCols := cols
+	horiz := horizontal
+	vert := vertical
+	iColor := Color
+
+    end setGrid
+
+    
+    %draws the grid using the given values or the default values
+    proc draw
+
+	for c : 0 .. numRows
+
+	    Draw.Line (x, y + (c * vert), x + (numCols * horiz), y + (c * vert), iColor)
+
+	end for
+
+	for c : 0 .. numCols
+
+	    Draw.Line (x + (c * horiz), y, x + (c * horiz), y + (numRows * vert), iColor)
+
+	end for
+
+    end draw
+
+
+    %takes in an x and y, and tells if the point is in the grid.
+    function isInside (xI, yI : int) : boolean
+
+	if (xI >= x and xI <= x + (numCols * horiz) and yI >= y and yI <= (numRows * vert)) then
+	    result true
+	else
+	    result false
+	end if
+
+    end isInside
+
+    
+    %given an x and y, tells which row and column the point is in
+    proc getRowCol (xG, yG : int, var rowNum, colNum : int)
+
+	rowNum := -1
+	colNum := -1
+
+	if (not isInside (xG, yG)) then
+	    rowNum := 0
+	    colNum := 0
+	end if
+
+	for c : 0 .. numCols - 1
+	    if (xG > x + (c * horiz) and xG < x + horiz + (c * horiz)) then
+		colNum := c + 1
+	    end if
+	end for
+
+	for c : 0 .. numRows - 1
+	    if (yG > y + (c * vert) and yG < y + vert + (c * vert)) then
+		rowNum := c + 1
+	    end if
+	end for
+
+    end getRowCol
+
+end Grid

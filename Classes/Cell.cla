@@ -1,0 +1,126 @@
+%Class Cell
+%Gaurav Sharma
+
+unit
+class Cell
+    export setCell, draw, click, setBombNumber, getBombNumber, flag , isFlagged ,setBomb, isBomb,getRow,getCol,isClicked
+    
+    
+    var squareLength : int := 60                                    %the length of each side of each cell
+    var filename : string := "Images/block.jpg" %the picture's location; defaults to block
+    var row, col : int := 1                                         %its place in the grid
+    var bombNumber : int := 0                                       % the number of bombs around the cell.
+    var flagged, hasBomb, clicked : boolean := false        %boolean that says, whether it is flagged, if it contains a bomb, and if it has been clicked
+
+    proc setCell (iRow, iCol : int)  %inital values
+
+	row := iRow
+	col := iCol
+
+    end setCell
+
+    proc draw(difficulty : boolean) %draws the cell
+
+	filename := "Images/block.jpg"              %this section determines what image to use
+
+	if (flagged) then
+	    filename := "Images/flag.jpg"
+	end if
+
+	if (clicked and hasBomb) then
+	    filename := "Images/bomb.jpg"
+	elsif (clicked) then
+
+	    case (bombNumber) of
+		
+		label 0 :
+		filename := "Images/0.jpg"
+		label 1 :
+		filename := "Images/1.jpg"
+		label 2 :
+		filename := "Images/2.jpg"
+		label 3 :
+		filename := "Images/3.jpg"
+		label 4 :
+		filename := "Images/4.jpg"
+		label 5 :
+		filename := "Images/5.jpg"
+		label 6 :
+		filename := "Images/6.jpg"
+		label 7 :
+		filename := "Images/7.jpg"
+		label 8 :
+		filename := "Images/8.jpg"
+
+	    end case
+
+	end if
+
+	var posx, posy : int
+	var mypic : int := Pic.FileNew (filename)
+	var mypicscaled : int 
+	
+	if(difficulty) then                             %If the game is on hard mode or not
+	    posx := 50 + (30 * (col - 1))               %This whole thing does two things, two different ways whether it is on hard mode or not. posx and posy are the
+	    posy := 100 + (30 * (row - 1))              %calculated lower left corner coordinates based on the row and column of the cell, the starting coordinates of  
+	    mypicscaled := Pic.Scale(mypic, 30, 30)     %the grid itself, and the cell length (they are squares).
+							% It also resizes the image depending on difficulty
+	else       
+	    posx := 100 + (60 * (col - 1))
+	    posy := 100 + (60 * (row - 1))
+	    mypicscaled := Pic.Scale(mypic, 60, 60) 
+	end if
+
+	Pic.Draw (mypicscaled, posx, posy, picCopy) 
+	Pic.Free(mypicscaled)
+	Pic.Free(mypic)
+
+    end draw
+
+    proc click          %irreveribly clicks on the cell
+
+	if (not flagged) then
+	    clicked := true
+	end if
+
+    end click
+
+
+    proc setBombNumber (bombNum : int)     %lets another method determine how many bombs are near this cell
+	bombNumber := bombNum
+    end setBombNumber
+    
+    fcn getBombNumber : int
+	result bombNumber    
+    end getBombNumber
+
+   
+     proc flag                   %toggles whether its flagged or not
+	flagged := not flagged
+    end flag
+    
+    fcn isFlagged : boolean
+	result flagged
+    end isFlagged
+
+    
+    proc setBomb    
+	hasBomb := not hasBomb       
+    end setBomb
+    
+    fcn isBomb : boolean    
+	result hasBomb
+    end isBomb
+    
+    fcn getRow : int
+	result row
+    end getRow
+    
+    fcn getCol : int
+	result col
+    end getCol
+    
+    fcn isClicked : boolean
+	result clicked
+    end isClicked
+end Cell
